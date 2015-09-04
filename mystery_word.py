@@ -24,6 +24,7 @@ def medium_words(word_list):
             medium_word_list.append(word)
     return medium_word_list
 
+
 def hard_words(word_list):
     """
     Returns a filtered version of the word list with words only containing
@@ -34,6 +35,7 @@ def hard_words(word_list):
         if len(word) >= 8:
             hard_word_list.append(word)
     return hard_word_list
+
 
 def random_word(word_list):
     """
@@ -64,6 +66,7 @@ def display_word(word, guesses):
             display.append('_')
     return ' '.join(display)
 
+
 def is_word_complete(word, guesses):
     """
     Returns True if the list of guesses covers every letter in the word,
@@ -87,8 +90,12 @@ def main():
     4. Finishing the game and displaying whether the user has won or lost
     5. Giving the user the option to play again
     """
-    word_list = []
-    game_word = ''
+    word_list = []          # holds entire dictionary
+    game_word = ''          # holds random word from specified game mode
+    guessed_letters = ''    # holds letters guessed by the user
+    temp_guess = ''         # temp variable to hold user input in MAIN GAME LOOP
+    num_guesses = 8         # number of guesses allotted to user per game
+
     # Read in entire dictionary
     with open('/usr/share/dict/words') as f:
         word_list = f.read().split()
@@ -114,9 +121,11 @@ def main():
             print("\nInvalid selection.")
             continue
 
-    if len(game_word) == 0:
-        # End the game
-        pass
+    # MAIN GAME LOOP
+    while len(game_word) != 0 and num_guesses > 0:
+        #TODO
+        guessed_letters.append(user_guess())
+
 
     print(display_word(game_word, 'abcdefg').center(55))
 
