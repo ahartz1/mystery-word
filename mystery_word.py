@@ -80,11 +80,36 @@ def main():
     4. Finishing the game and displaying whether the user has won or lost
     5. Giving the user the option to play again
     """
-    # TODO
     word_list = []
+    game_list = []
+    # Read in entire dictionary
     with open('/usr/share/dict/words') as f:
         word_list = f.read().split()
-    print(hard_words(word_list))
+
+    print("\n"+('#'*10+"    Welcome to Mystery Word!    "+'#'*10).upper().center(55)+"\n")
+    while True:
+        print("\nPlease select your level of difficulty (press Q to quit):")
+        difficulty_level = input( "[E]asy, [M]edium, or [H]ard.)\n> ").lower()
+        if difficulty_level == 'e':
+            game_list = easy_words(word_list)
+            break
+        elif difficulty_level == 'm':
+            game_list = medium_words(word_list)
+            break
+        elif difficulty_level == 'h':
+            game_list = hard_words(word_list)
+            break
+        elif difficulty_level == 'q':
+            break
+        else:
+            print("\nInvalid selection.")
+            continue
+
+    if len(game_list) == 0:
+        # End the game
+        pass
+
+    print(game_list)
 
 
 if __name__ == '__main__':
