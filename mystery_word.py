@@ -1,3 +1,5 @@
+import random
+
 
 def easy_words(word_list):
     """
@@ -30,8 +32,7 @@ def random_word(word_list):
     """
     Returns a random word from the word list.
     """
-    # TODO
-    pass
+    return word_list[random.randint(0,len(word_list))]
 
 
 def display_word(word, guesses):
@@ -73,6 +74,10 @@ def main():
     5. Giving the user the option to play again
     """
     # TODO
+    word_list = []
+    with open('/usr/share/dict/words') as f:
+        word_list = f.read().split()
+    print(random_word(word_list))
 
 
 if __name__ == '__main__':
