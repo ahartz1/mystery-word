@@ -53,9 +53,16 @@ def display_word(word, guesses):
     For example, if the word is BOMBARD and the letters guessed are a, b,
     and d, this function should return 'B _ _ B A _ D'.
     """
-    # TODO
-    pass
+    # Have a collector list, insert upper() of iteration variable if present
+    # insert '_' if not in word
+    display = []
 
+    for char in word:
+        if char in guesses:
+            display.append(char.upper())
+        else:
+            display.append('_')
+    return ' '.join(display)
 
 def is_word_complete(word, guesses):
     """
@@ -81,23 +88,25 @@ def main():
     5. Giving the user the option to play again
     """
     word_list = []
-    game_list = []
+    game_word = ''
     # Read in entire dictionary
     with open('/usr/share/dict/words') as f:
         word_list = f.read().split()
 
     print("\n"+('#'*10+"    Welcome to Mystery Word!    "+'#'*10).upper().center(55)+"\n")
+
+    # User game mode input
     while True:
         print("\nPlease select your level of difficulty (press Q to quit):")
         difficulty_level = input( "[E]asy, [M]edium, or [H]ard.)\n> ").lower()
         if difficulty_level == 'e':
-            game_list = easy_words(word_list)
+            game_word = random_word(easy_words(word_list))
             break
         elif difficulty_level == 'm':
-            game_list = medium_words(word_list)
+            game_word = random_word(medium_words(word_list))
             break
         elif difficulty_level == 'h':
-            game_list = hard_words(word_list)
+            game_word = random_word(hard_words(word_list))
             break
         elif difficulty_level == 'q':
             break
@@ -105,11 +114,11 @@ def main():
             print("\nInvalid selection.")
             continue
 
-    if len(game_list) == 0:
+    if len(game_word) == 0:
         # End the game
         pass
 
-    print(game_list)
+    print(display_word(game_word, 'abcdefg').center(55))
 
 
 if __name__ == '__main__':
