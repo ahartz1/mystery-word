@@ -1,5 +1,4 @@
 import random
-#from sys import exit
 
 
 def easy_words(word_list):
@@ -68,6 +67,25 @@ def display_word(word, guesses):
     return ' '.join(display)
 
 
+
+def show_guessed_letters(guessed_letters):
+    VOWELS = 'aeiou'
+    vowels = []
+    consonants = []
+    for char in guessed_letters:
+        if char in VOWELS:
+            vowels.append(char)
+        else:
+            consonants.append(char)
+
+    print('\n')
+    if len(vowels) > 0:
+        print('Guessed Vowels:     {}'.format(' '.join(sorted(vowels)).upper()))
+
+    if len(consonants) > 0:
+        print('Guessed Consonants: {}'.format(' '.join(sorted(consonants)).upper()))
+
+
 def is_word_complete(word, guesses):
     """
     Returns True if the list of guesses covers every letter in the word,
@@ -110,11 +128,11 @@ def game_loop(game_word, width):
     num_guesses = 0         # number of expended user guesses
     play_again = False      # records whether user wants to play again
     # MAIN GAME LOOP
-    while len(game_word) != 0 and num_guesses < 8:
+    while len(game_word) != 0 and num_guesses < allowed_guesses:
         # Print current state of word with underscores for unguessed letters
         print(display_word(game_word, guessed_letters).center(width))
-        print("Test: {}".format(game_word)) # TEST TO REMOVE
-        print("\nYou have {} guesses remaining.".format(allowed_guesses - num_guesses))
+        # print("Test: {}".format(game_word)) # TEST TO REMOVE
+        print('\n\nYou have {} guesses remaining.'.format(allowed_guesses - num_guesses))
 
         # Get guess from user and add to guessed_letters list
         guessed_letters.append(user_guess(guessed_letters, width))
@@ -124,7 +142,8 @@ def game_loop(game_word, width):
             num_guesses += 1
 
         # Show guessed letters
-        print("\nLetters already guessed:\n"+', '.join(guessed_letters).upper())
+        show_guessed_letters(guessed_letters)
+        # print("\nLetters already guessed:\n"+', '.join(sorted(guessed_letters)).upper())
 
         if is_word_complete(game_word, guessed_letters):
             print(display_word(game_word, guessed_letters).center(width))
@@ -146,7 +165,7 @@ def game_loop(game_word, width):
 
 
 def user_guess(guesses, width):
-    # user_guess = ''
+    user_guess = ''
     while True:
         user_guess = input("\n"+"-"*width+"\nPlease guess a letter.\n> ").lower()
         if len(user_guess) == 0:
@@ -177,7 +196,7 @@ def user_continue(width):
             break
         elif user_continue == 'n':
             continue_bool = False
-            goodbye_msg = "Have a nice day!".upper()
+            goodbye_msg = "Goodbye".upper()
             goodbye_fill = (width - len(goodbye_msg))//2
             print('\n\n'+'_'*goodbye_fill+goodbye_msg+'_'*goodbye_fill+'\n\n')
             break
@@ -214,7 +233,7 @@ def main():
             welcome = '    Welcome to Mystery Word!    '.upper()
             fill_half = (width - len(welcome))//2
             print('\n'*2+('#'*fill_half+welcome+'#'*fill_half).upper().center(width)+'\n')
-            print("Please resize your terminal window to 80 x 24 for best results.".center(width)+'\n'*3)
+            # print("Please resize your terminal window to 80 x 24 for best results.".center(width)+'\n'*3)
             # print('\n'*3)
 
         # Get game word
