@@ -83,7 +83,7 @@ def is_word_complete(word, guesses):
 def user_guess(guesses):
     # user_guess = ''
     while True:
-        user_guess = input("\n"+"-"*55+"\nPlease guess a letter.\n> ")
+        user_guess = input("\n"+"-"*55+"\nPlease guess a letter.\n> ").lower()
         if len(user_guess) == 0:
             continue
         elif len(user_guess) > 1:
@@ -95,7 +95,8 @@ def user_guess(guesses):
         else:
             # Don't allow already guessed letters
             if user_guess in guesses:
-                print("You have already guessed {}.".format(user_guess))
+                print("You have already guessed "
+                      "\'{}\'.".format(user_guess.upper()))
                 continue
             break
     return user_guess
@@ -118,7 +119,8 @@ def main():
     game_word = ''          # holds random word from specified game mode
     guessed_letters = []    # holds letters guessed by the user
     temp_guess = ''         # temp variable to hold user input in MAIN GAME LOOP
-    num_guesses = 8         # number of guesses allotted to user per game
+    allowed_guesses = 8     # number of guesses allotted to user per game
+    num_guesses = 0         # number of expended user guesses
 
     # Read in entire dictionary
     with open('/usr/share/dict/words') as f:
@@ -146,14 +148,25 @@ def main():
             continue
 
     # MAIN GAME LOOP
-    while len(game_word) != 0 and num_guesses > 0:
-        #TODO
+    while len(game_word) != 0 and num_guesses < 8:
+        # Print current state of word with underscores for unguessed letters
+        print(display_word(game_word, guessed_letters).center(55))
+
+        print("\nYou have {} guesses remaining.".format(allowed_guesses - num_guesses))
+
+        # Get guess from user and add to guessed_letters list
         guessed_letters.append(user_guess(guessed_letters))
-        print(guessed_letters) # Test
+        num_guesses += 1
+        # Show guessed letters
+        print("\nLetters already guessed:\n"+', '.join(guessed_letters).upper())
 
+        if is_word_complete(game_word, guessed_letters):
+            print("You win!".upper())
+        elif num_guesses >= allowed_guesses:
+            print("You have run out of guesses.")
 
-    print(is_word_complete(game_word, list('abcdefg')))
-    print(display_word(game_word, list('abcdefg')).center(55))
+    # print(is_word_complete(game_word, list(guessed_letters)))
+    # print(display_word(game_word, list('abcdefg')).center(55))
 
 
 if __name__ == '__main__':
