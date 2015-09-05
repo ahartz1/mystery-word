@@ -132,7 +132,7 @@ def game_loop(game_word, width):
     while len(game_word) != 0 and num_guesses < allowed_guesses:
         # Print current state of word with underscores for unguessed letters
         print(display_word(game_word, guessed_letters).center(width))
-        print("Test: {}".format(game_word)) # TEST TO REMOVE
+        # print("Test: {}".format(game_word)) # TEST TO REMOVE
         print('\n\nYou have {} guesses remaining.'.format(allowed_guesses - num_guesses))
 
         # Get guess from user and add to guessed_letters list
@@ -150,7 +150,8 @@ def game_loop(game_word, width):
             print(display_word(game_word, guessed_letters).center(width))
             win_msg = '    You win!    '.upper()
             win_fill = (width - len(win_msg)*3)//4
-            print(('\n'+('='*win_fill+win_msg)*3+'='*win_fill)+'\n\n')
+            extra_bit = width - len(win_msg)*3 - 4*win_fill
+            print(('\n'+('='*win_fill+win_msg)*3+'='*(win_fill+extra_bit))+'\n\n')
         elif num_guesses >= allowed_guesses:
             no_guesses_msg = 'You have run out of guesses'.upper()
             no_guesses_fill = (width - len(no_guesses_msg))//2
