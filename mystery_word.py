@@ -83,9 +83,10 @@ def is_word_complete(word, guesses):
 
 def game_mode(word_list):
     '''Queries user for game mode and returns game_word'''
+    game_word = ''
     while True:
         print("\nPlease select your level of difficulty (press Q to quit):")
-        difficulty_level = input( "[E]asy, [M]edium, or [H]ard.)\n> ").lower()
+        difficulty_level = input( "[E]asy, [M]edium, or [H]ard\n> ").lower()
         if difficulty_level == 'e':
             game_word = random_word(easy_words(word_list))
             break
@@ -103,20 +104,20 @@ def game_mode(word_list):
     return game_word
 
 
-def game_loop(game_word):
+def game_loop(game_word, width):
     guessed_letters = []    # holds letters guessed by the user
-    allowed_guesses = 1     # number of guesses allotted to user per game (8)
+    allowed_guesses = 8     # number of guesses allotted to user per game (8)
     num_guesses = 0         # number of expended user guesses
     play_again = False      # records whether user wants to play again
     # MAIN GAME LOOP
     while len(game_word) != 0 and num_guesses < 8:
         # Print current state of word with underscores for unguessed letters
-        print(display_word(game_word, guessed_letters).center(55))
+        print(display_word(game_word, guessed_letters).center(width))
         print("Test: {}".format(game_word)) # TEST TO REMOVE
         print("\nYou have {} guesses remaining.".format(allowed_guesses - num_guesses))
 
         # Get guess from user and add to guessed_letters list
-        guessed_letters.append(user_guess(guessed_letters))
+        guessed_letters.append(user_guess(guessed_letters, width))
 
         # Add to guess tally if letter is not in game_word
         if guessed_letters[-1] not in game_word:
@@ -126,24 +127,28 @@ def game_loop(game_word):
         print("\nLetters already guessed:\n"+', '.join(guessed_letters).upper())
 
         if is_word_complete(game_word, guessed_letters):
-            print(display_word(game_word, guessed_letters).center(55))
-            print(('\n'+'='*10+"     You win!     ".upper()+'='*10).center(55))
+            print(display_word(game_word, guessed_letters).center(width))
+            win_msg = '    You win!    '.upper()
+            win_fill = (width - len(win_msg)*2)//2//3
+            print(('\n'+('='*win_fill+win_msg)*3+'='*win_fill)+'\n\n')
         elif num_guesses >= allowed_guesses:
-            print("\nYou have run out of guesses.".upper())
-            print("\n\nThe word you were trying to guess was: {}".format(game_word.upper()))
+            no_guesses_msg = 'You have run out of guesses'.upper()
+            no_guesses_fill = (width - len(no_guesses_msg))//2
+            print('\n'+'_'*no_guesses_fill+no_guesses_msg+'_'*no_guesses_fill)
+            print('\nThe word you were trying to guess was: {}\n\n'.format(game_word.upper()))
 
         if is_word_complete(game_word, guessed_letters) or num_guesses >= allowed_guesses:
-            play_again = user_continue()
+            play_again = user_continue(width)
             break
         # Not sure if I need to return both; is there a way to return just one?
     return play_again, False
 
 
 
-def user_guess(guesses):
+def user_guess(guesses, width):
     # user_guess = ''
     while True:
-        user_guess = input("\n"+"-"*55+"\nPlease guess a letter.\n> ").lower()
+        user_guess = input("\n"+"-"*width+"\nPlease guess a letter.\n> ").lower()
         if len(user_guess) == 0:
             continue
         elif len(user_guess) > 1:
@@ -162,17 +167,19 @@ def user_guess(guesses):
     return user_guess
 
 
-def user_continue():
+def user_continue(width):
     user_continue = ''
     continue_bool = False
     while True:
-        user_continue = input("Play again? [Y]/[n]: ").lower()
+        user_continue = input("Play again? [Y/n]: ").lower()
         if user_continue == '' or user_continue == 'y':
             continue_bool = True
             break
         elif user_continue == 'n':
             continue_bool = False
-            print("\nHave a nice day!".upper())
+            goodbye_msg = "Have a nice day!".upper()
+            goodbye_fill = (width - len(goodbye_msg))//2
+            print('\n\n'+'_'*goodbye_fill+goodbye_msg+'_'*goodbye_fill+'\n\n')
             break
         else:
             continue
@@ -197,20 +204,24 @@ def main():
     game_word = ''          # holds random word from specified game mode
     play_again = False      # records whether player wants to play again
     game_start = True       # records whether the game has been played yet
+    width = 80              # terminal width
 
     while True:
         if game_start:
             # Read in entire dictionary
             with open('/usr/share/dict/words') as f:
                 word_list = f.read().split()
-
-            print("\n"+('#'*10+"    Welcome to Mystery Word!    "+'#'*10).upper().center(55)+"\n")
+            welcome = '    Welcome to Mystery Word!    '.upper()
+            fill_half = (width - len(welcome))//2
+            print('\n'*2+('#'*fill_half+welcome+'#'*fill_half).upper().center(width)+'\n')
+            print("Please resize your terminal window to 80 x 24 for best results.".center(width)+'\n'*3)
+            # print('\n'*3)
 
         # Get game word
         game_word = game_mode(word_list)
 
         # Run game loop
-        play_again, game_start = game_loop(game_word)
+        play_again, game_start = game_loop(game_word, width)
 
         if play_again:
             continue
