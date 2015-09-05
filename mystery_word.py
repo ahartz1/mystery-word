@@ -1,4 +1,5 @@
 import random
+#from sys import exit
 
 
 def easy_words(word_list):
@@ -41,7 +42,7 @@ def random_word(word_list):
     """
     Returns a random word from the word list.
     """
-    return word_list[random.randint(0,len(word_list))]
+    return word_list[random.randint(0,len(word_list))].lower()
 
 
 def display_word(word, guesses):
@@ -101,6 +102,24 @@ def user_guess(guesses):
             break
     return user_guess
 
+
+def user_continue():
+    user_continue = ''
+    continue_bool = False
+    while True:
+        user_continue = input("Play again? [Y]/[n]: ").lower()
+        if user_continue == '' or user_continue == 'y':
+            continue_bool = True
+            break
+        elif user_continue == 'n':
+            continue_bool = False
+            print("\nHave a nice day!".upper())
+            break
+        else:
+            continue
+    return continue_bool
+
+
 def main():
     """
     Runs when the program is called from the command-line.
@@ -119,14 +138,21 @@ def main():
     game_word = ''          # holds random word from specified game mode
     guessed_letters = []    # holds letters guessed by the user
     temp_guess = ''         # temp variable to hold user input in MAIN GAME LOOP
-    allowed_guesses = 8     # number of guesses allotted to user per game
+    allowed_guesses = 1     # number of guesses allotted to user per game (8)
     num_guesses = 0         # number of expended user guesses
+    play_again = False      # records whether player wants to play again
 
     # Read in entire dictionary
     with open('/usr/share/dict/words') as f:
         word_list = f.read().split()
 
     print("\n"+('#'*10+"    Welcome to Mystery Word!    "+'#'*10).upper().center(55)+"\n")
+
+    '''
+    I'm considering wrapping all of the below in a while loop because only code
+    within main() is run when called; no way to use a sentinel defined outside
+    What would drive this loop? It has to run every time; while True
+    '''
 
     # User game mode input
     while True:
@@ -151,19 +177,36 @@ def main():
     while len(game_word) != 0 and num_guesses < 8:
         # Print current state of word with underscores for unguessed letters
         print(display_word(game_word, guessed_letters).center(55))
-
+        print("Test: {}".format(game_word)) # TEST TO REMOVE
         print("\nYou have {} guesses remaining.".format(allowed_guesses - num_guesses))
 
         # Get guess from user and add to guessed_letters list
         guessed_letters.append(user_guess(guessed_letters))
-        num_guesses += 1
+
+        # Add to guess tally if letter is not in game_word
+        if guessed_letters[-1] not in game_word:
+            num_guesses += 1
+
         # Show guessed letters
         print("\nLetters already guessed:\n"+', '.join(guessed_letters).upper())
 
         if is_word_complete(game_word, guessed_letters):
-            print("You win!".upper())
+            print(display_word(game_word, guessed_letters).center(55))
+            print("\nYou win!".upper())
         elif num_guesses >= allowed_guesses:
-            print("You have run out of guesses.")
+            print("\nYou have run out of guesses.".upper())
+            print("\n\nThe word you were trying to guess was: {}".format(game_word.upper()))
+
+
+        #TODO
+        # Game clean-up; this needs to be outside of game loop
+        if is_word_complete(game_word, guessed_letters) or num_guesses >= allowed_guesses:
+            play_again = user_continue()
+            if play_again:
+                game_start = False
+                continue
+            else:
+                break
 
     # print(is_word_complete(game_word, list(guessed_letters)))
     # print(display_word(game_word, list('abcdefg')).center(55))
