@@ -12,8 +12,6 @@
 
 `python3 mystery_word.py`
 
-#### Normal Mode
-
 ##### Choose your word length difficulty
 Easy | Medium | Hard
 |:---:|:---:|:---:|
