@@ -68,7 +68,6 @@ def display_word(game_word, guessed_letters):
     return ' '.join(display)
 
 
-
 def show_guessed_letters(guessed_letters):
     VOWELS = 'aeiou'
     vowels = []
@@ -97,6 +96,24 @@ def is_word_complete(game_word, guessed_letters):
         if char not in guessed_letters:
             is_complete = False
     return is_complete
+
+
+def evil_word_selector(game_word, guessed_letters, evil_dict):
+    '''
+    evil_dict is a dictionary of words that are of game_word length.
+    '''
+    word_template = display_word(game_word, guessed_letters)
+    evil_options = []
+    evil_options[0] = evil_dict[:]
+
+    for i, char in enumerate(word_template):
+        if char =! '_':
+            for word in evil_options[i]:
+                if char == word[i]:
+                    evil_options[i+1].append(word)
+
+    evil_word = random_word(evil_options[-1])
+    return evil_word, reduced_evil_dict
 
 
 def game_mode(word_list):
