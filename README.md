@@ -19,4 +19,4 @@ Easy | Medium | Hard
 4–6 | 6–8 | 8+
 
 ##### A word about the dictionary
-The words used in this game are from web2 (Webster's Second International) dictionary, copyright 1934. The copyright has lapsed, and thus in the public domain. Keep an open mind and get ready to learn some new words as you play!
+The words used in this game are from web2 (Webster's Second International) dictionary, copyright 1934. The copyright has lapsed, and thus is in the public domain. Keep an open mind and get ready to learn some new words as you play!

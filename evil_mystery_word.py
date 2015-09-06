@@ -98,22 +98,43 @@ def is_word_complete(game_word, guessed_letters):
     return is_complete
 
 
-def evil_word_selector(game_word, guessed_letters, evil_dict):
+def evil_word_selector(game_word, guessed_letters, evil_list):
     '''
-    evil_dict is a dictionary of words that are of game_word length.
-    '''
-    word_template = display_word(game_word, guessed_letters)
-    evil_options = []
-    evil_options[0] = evil_dict[:]
+    evil_list begins as a list of words that are of game_word length.
+    1. A new random generator is needed for this version; chose word length only.
+    2. Because we are going to return the pared down list, we need only assess
+       the incoming letter.
+    3. Look at the incoming list and make two lists for each empty position:
+         a. one that has the guessed letter (yes_guessed_letter)
+         b. one that does not have the guessed letter (no_guessed_letter)
+    4. Assess which list is largest.
+    5. If the larger of the lists includes the guessed letter, include it,
+         otherwise, exclude it.
+    * What about duplicate letters?
 
+    '''
+    word_template = display_word(game_word, guessed_letters[:-1])
+    evil_options = []
+    evil_options[0] = evil_list[:]
+
+    # Make a list of lists, each containing narrower set of the last
     for i, char in enumerate(word_template):
-        if char =! '_':
+        if char != '_':
             for word in evil_options[i]:
                 if char == word[i]:
-                    evil_options[i+1].append(word)
+                    evil_options[i+1].extend(list(word))
 
-    evil_word = random_word(evil_options[-1])
-    return evil_word, reduced_evil_dict
+    # Make a selection from the pared down list
+    while True:
+        evil_word = random_word(evil_options[-1])
+        if evil_word = game_word
+
+    return evil_word, evil_options[-1]
+
+
+# def evil_list_reducer(word_template, prev_guessed_letters, evil_list):
+#
+#     return reduced_evil_list
 
 
 def game_mode(word_list):
@@ -180,7 +201,6 @@ def game_loop(game_word, width):
             break
         # Not sure if I need to return both; is there a way to return just one?
     return play_again, False
-
 
 
 def user_guess(guesses, width):
