@@ -131,6 +131,7 @@ def game_loop(game_word, width):
     # MAIN GAME LOOP
     while len(game_word) != 0 and num_guesses < allowed_guesses:
         # Print current state of word with underscores for unguessed letters
+        print('\n')
         print(display_word(game_word, guessed_letters).center(width))
         # print("Test: {}".format(game_word)) # TEST TO REMOVE
         print('\n\nYou have {} guesses remaining.'.format(allowed_guesses - num_guesses))
@@ -231,17 +232,22 @@ def main():
     terminal_info = get_terminal_size()
     if terminal_info[0] > 0:
         width = terminal_info[0]
+    if terminal_info[1] > 0:
+        height = terminal_info[1]
 
     while True:
         if game_start:
             # Read in entire dictionary
             with open('/usr/share/dict/words') as f:
                 word_list = f.read().split()
-            welcome = '    Welcome to Mystery Word!    '.upper()
-            fill_half = (width - len(welcome))//2
-            print('\n'*2+('#'*fill_half+welcome+'#'*fill_half).upper().center(width)+'\n')
-            # print("Please resize your terminal window to 80 x 24 for best results.".center(width)+'\n'*3)
-            # print('\n'*3)
+
+            # Print welcome
+            print('?'*width)
+            welcome = 'Welcome to Mystery Word!'.upper()
+            fill_half = (width - len(welcome) - 2)//2
+            print(('?'+' '*(width-2)+'?')*6)
+            print(('?'+' '*fill_half+welcome+' '*fill_half+'?'))
+            print(('?'+' '*(width-2)+'?\n')*(height-28))
 
         # Get game word
         game_word = game_mode(word_list)
