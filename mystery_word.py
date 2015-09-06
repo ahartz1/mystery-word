@@ -228,6 +228,7 @@ def main():
     play_again = False      # records whether player wants to play again
     game_start = True       # records whether the game has been played yet
     width = 80              # default width
+    height = 24             # default height
     terminal_info = {}      # dictionary to recieve terminal info from system
 
     terminal_info = get_terminal_size()
