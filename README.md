@@ -11,7 +11,7 @@
 * To run this program, save `mystery_word.py` to your computer. Using a command-line program (such as Terminal on Mac&nbsp;OS&nbsp;X), navigate to the folder containing the downloaded file and run the following line to play: `python3 mystery_word.py`
 
 #### Game Description
-Much like hangman, you guess letters in an effort to uncover the word. Blanks are represented by an underscore. You have only 8 guesses, but if you select a letter that is in the word, you do not lose a guess.
+Much like hangman, you guess letters in an effort to uncover the word. Once you select your difficulty level, each letter in the word is represented by an underscore. As you guess letters correctly, they replace these place-holding underscores. You have only **8 guesses**, but if you select a letter that is in the word, **you do not lose a guess**. Your number of remaining guesses is displayed each round, along with the vowels and consonants that you have already guessed.
 
 ##### Choose your word length difficulty
 Easy | Medium | Hard
