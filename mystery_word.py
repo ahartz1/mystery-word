@@ -245,9 +245,9 @@ def main():
             print('?'*width)
             welcome = 'Welcome to Mystery Word!'.upper()
             fill_half = (width - len(welcome) - 2)//2
-            print(('?'+' '*(width-2)+'?')*6)
-            print(('?'+' '*fill_half+welcome+' '*fill_half+'?'))
-            print(('?'+' '*(width-2)+'?\n')*(height-28))
+            print(('?' + ' '*(width-2) + '?')*((height-7)//3))
+            print( '?' + ' '*fill_half + welcome + ' '*fill_half+'?')
+            print(('?' + ' '*(width-2) + '?\n')*((height-7)*2//3))
 
         # Get game word
         game_word = game_mode(word_list)
