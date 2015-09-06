@@ -152,11 +152,12 @@ def game_loop(game_word, width):
             win_msg = '    You win!    '.upper()
             win_fill = (width - len(win_msg)*3)//4
             extra_bit = width - len(win_msg)*3 - 4*win_fill
-            print(('\n'+('='*win_fill+win_msg)*3+'='*(win_fill+extra_bit))+'\n\n')
+            print(('\n'*4+('='*win_fill+win_msg)*3+'='*(win_fill+extra_bit))+'\n\n')
         elif num_guesses >= allowed_guesses:
+            print(display_word(game_word, guessed_letters).center(width))
             no_guesses_msg = 'You have run out of guesses'.upper()
             no_guesses_fill = (width - len(no_guesses_msg))//2
-            print('\n'+'_'*no_guesses_fill+no_guesses_msg+'_'*no_guesses_fill)
+            print('\n'*4+'_'*no_guesses_fill+no_guesses_msg+'_'*no_guesses_fill)
             print('\nThe word you were trying to guess was: {}\n\n'.format(game_word.upper()))
 
         if is_word_complete(game_word, guessed_letters) or num_guesses >= allowed_guesses:
