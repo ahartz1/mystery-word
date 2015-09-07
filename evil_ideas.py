@@ -1,20 +1,35 @@
 def evil_word_selector(constraints, guessed_letters, evil_word_list):
     '''Because we aren't using a single word, our "word" is constraints'''
-    repeats = []      # list of lists; index represents # of viable letter occurrences
+    repeats = {}      # dict of lists; key represents # of viable letter occurrences
     letter_count = 0  # number of viable letter occurences
+    list_counter = {}
 
     for word in evil_word_list:
-      letter_count = list(word).count(guessed_letters[0][-1])
-      if letter_count > 0:
-        assess_open_spots(word, guessed_letters[1][:])
-      else:
-        repeats[0].extend(list(guessed_letters[0][-1]))
-      repeats[len(letter_count)].extend([word])
+        letter_count = list(word).count(guessed_letters[0][-1])
+        if letter_count > 0:
+            if assess_open_spots(word, constraints, guessed_letters):
+                repeats[letter_count]['words'].extend([word])
+        else:
+            repeats[0]['words'].extend([word]) # represents list of words without guessed letter
 
-      return evil_word_list, guessed_letters, constraints
+        # Assess relative lengths of initial pass
+        for num_repeats, word_list in repeats.items():
+             list_counter[num_repeats] = len(repeats[num_repeats])
 
-def assess_open_slots(word, constraints, guessed_letters, evil_word_list):
-  pass
+            len(repeats[0]) >= len(repeats[1]):
+                evil_word_list = repeats[0][:]
+        else:
+            # Start assessment of duplicates
+            while True:
+
+
+    return evil_word_list, guessed_letters, constraints
+
+def assess_open_slots(word, letter, constraints, repeats):
+    if # letter only appears in '_' slots:
+        return True, repeats
+    else:
+        return False, repeats
 
 
 constraints = display_word(guessed_letters[1])
@@ -50,6 +65,14 @@ guessed_letters may now need to be a list containing two lists: the current gues
 letter and the letters used; guessed_letters[0] and guessed_letters[1], respectively.
   - Is this necessary? We will already be returning a list that eliminates the
     previously guessed letters, so no need to keep track of them.
-    - Yes, we will need a place to store the current guess; must clear the current
-      letter from guessed_letters[0] after assessment is made.
+    - Yes, we will need a place to store the current guess and all guessed letters.
+'''
+
+'''
+list_lengths will be a dictionary.
+  - key=0 will be for length of list without letter
+  - key=1 will be for length of list with letter (regardless of how many duplicates)
+      - used for first round assessment
+  - key='empirical display' (e.g., "_ _ E _")
+      - each of these are created only when length of other lists are considered
 '''
