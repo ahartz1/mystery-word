@@ -114,8 +114,8 @@ def evil_word_selector(game_word, guessed_letters, evil_list):
               of words left after the duplicated position has been filled
          b. one that does not have the guessed letter (no_guessed_letter)
     4. Assess which list is largest.
-    5. If the larger of the lists includes the guessed letter, include it,
-         otherwise, exclude it.
+    5. If the larger of the lists includes the guessed letter, include it wherever
+        it appears, otherwise, exclude it.
     '''
     word_template = display_word(game_word, guessed_letters[:-1])
     evil_options = []
