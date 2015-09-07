@@ -11,12 +11,15 @@ def evil_word_selector(constraints, guessed_letters, evil_word_list):
     for word in evil_word_list:
         letter_count = list(word.lower()).count(guessed_letters[0][-1])
         if letter_count > 0:
-            useable_word, new_constraints = assess_open_slots(word.lower(), guessed_letters[0][-1], constraints)
+            if not repeats.get(letter_count, False):
+                repeats[letter_count] = {}
+            useable_word, new_constraints = assess_open_slots(
+              word.lower(), guessed_letters[0][-1], constraints)
             if useable_word:
             # Now, put into a list keyed with the new constraint
             #(e.g., if our letter is 'e', the key would be '_e__')
                 if not repeats[letter_count].get(new_constraints, False):
-                    repeats[letter_count] = {new_constraints: []} #TODO
+                    repeats[letter_count][new_constraints] = []
                 repeats[letter_count][new_constraints].append(word.lower())
         else:
             repeats[0]['words'].append(word) # list of words without guessed letter
@@ -52,7 +55,7 @@ def assess_open_slots(word, letter, constraints):
         if constraint_char == '_':
             available_indices.append(constraint_index)
 
-    for index, char in enumerate(list(word)):
+    for index, char in enumerate(list(word.lower())):
         if letter == char:    # look for location of guess letter in word
             if index not in available_indices: # letter can only appear in '_' slots:
                 new_constraints = list(constraints)
@@ -64,7 +67,8 @@ def assess_open_slots(word, letter, constraints):
 
 evil_word_list = ['goat', 'moat', 'boat',
                   'goal', 'mode', 'boar',
-                  'goad', 'goag', 'goaf']
+                  'goad', 'goag', 'goaf',
+                  'ooag']
 constraints = '__a_'
 guessed_letters = [[],[]]
 guessed_letters[0].append('g')
@@ -118,4 +122,8 @@ list_lengths will be a dictionary.
 constraints will be defined as a list with index corresponding to position in
 word of game_word length. Unfilled slots have a value of '_', filled slots have
 the value of the letter present.
+'''
+
+'''
+repeats = {0: {words: []}, 1: {'__*_': [], '_*__': []}, 2: {'_*_*': [], '*_*_': []}}
 '''
