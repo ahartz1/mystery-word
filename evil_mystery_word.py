@@ -101,17 +101,21 @@ def is_word_complete(game_word, guessed_letters):
 def evil_word_selector(game_word, guessed_letters, evil_list):
     '''
     evil_list begins as a list of words that are of game_word length.
-    1. A new random generator is needed for this version; chose word length only.
+    1. A new random generator is needed for this version; choose word length only.
+         - Need to look at distribution of words at different lengths to see
+           what length should be the upper cutoff for game play
     2. Because we are going to return the pared down list, we need only assess
        the incoming letter.
     3. Look at the incoming list and make two lists for each empty position:
          a. one that has the guessed letter (yes_guessed_letter)
+            - requires that each word be checked for duplicates that might
+                  interfere with non-blanks.
+            - any word that has duplicates must then be checked against the number
+              of words left after the duplicated position has been filled
          b. one that does not have the guessed letter (no_guessed_letter)
     4. Assess which list is largest.
     5. If the larger of the lists includes the guessed letter, include it,
          otherwise, exclude it.
-    * What about duplicate letters?
-
     '''
     word_template = display_word(game_word, guessed_letters[:-1])
     evil_options = []
