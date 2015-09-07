@@ -5,14 +5,19 @@ def evil_word_selector(constraints, guessed_letters, evil_word_list):
     letter_count = 0   # number of viable letter occurences
     most_words = 0     # placeholder dictionary to hold
     selected_dict = {} # holds largest dictionary
+    new_constraints = ''
 
     for word in evil_word_list:
         letter_count = list(word).count(guessed_letters[0][-1])
         if letter_count > 0:
             if not repeats.get(letter_count, False):
                 repeats[letter_count] = {'words': [], 'use': False}
-            if assess_open_slots(word, guessed_letters[0][-1], constraints):
-                repeats[letter_count]['words'].append(word)
+            #TODO
+            new_constraints, use_word = assess_open_slots(word, guessed_letters[0][-1], constraints)
+            if use_word:
+                repeats[letter_count][new_constraints].append(word)
+                # Now, put into a list keyed with the new constraint
+                #(e.g., if our letter is 'e', the key would be '_E__')
         else:
             repeats[0]['words'].append(word) # list of words without guessed letter
 
@@ -24,20 +29,24 @@ def evil_word_selector(constraints, guessed_letters, evil_word_list):
             selected_dict = num_repeats_dict
 
     # Make decision about how to proceed
-    if selected_dict == repeats[0]:
+    if selected_dict['length'] == repeats[0]['length']:
         evil_word_list = repeats[0]['words']
     else:
         # Start assessment of duplicates
         # while True:
         print("I made it here!")
 
-    print(repeats)
-    print("Letter: {}\nTotal words: {}".format(guessed_letters[0][-1], len(evil_word_list)))
+    # print(repeats)
+    # print("Letter: {}\nTotal words: {}".format(guessed_letters[0][-1], len(evil_word_list)))
+    # print(evil_word_list)
+    # TODO Make sure you have updated constraints to new_constraints if necessary
     return constraints, guessed_letters, evil_word_list
 
 def assess_open_slots(word, letter, constraints):
     available_indices = []
     usable = True
+    new_constraints = list(constraints)
+
     for constraint_index, constraint_char in enumerate(list(constraints)):
         if constraint_char == '_':
             available_indices.append(constraint_index)
@@ -45,13 +54,16 @@ def assess_open_slots(word, letter, constraints):
     for index, char in enumerate(list(word)):
         if letter == char:    # look for location of guess letter in word
             if index not in available_indices: # letter can only appear in '_' slots:
-                return False, repeats
+                new_constraints = list(constraints)
+                return False, constraints
+            else:
+                new_constraints[index] = letter
 
-    return usable
+    return usable, ''.join(new_constraints)
 
 evil_word_list = ['goat', 'moat', 'boat',
                   'goal', 'mode', 'boar',
-                  'goad', 'goag']
+                  'goad', 'goag', 'goaf']
 constraints = '__a_'
 guessed_letters = []
 guessed_letters.append(['g'])
