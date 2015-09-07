@@ -29,10 +29,16 @@ by previous letter guessed.
 evil_word_selector optimization ideas:
 If any list of duplicates is longer than both the non-letter-containing list and
 the single-letter-containing list:
-  - instead of looking at all permutations, use an empirical approach: take the
+  - Instead of looking at all permutations, use an empirical approach: take the
     first word and look for the number of other words in the list with that
     configuration of duplicates. Then, assess the length of that list against the
     next longest list (first time around, this would be the single-letter-containing
     list because the non-letter-containing list has to be shorter to start the
     evaluation process to begin with.
+      - If the empirical list is longer than both, check to see if the length
+        of empirical list is longer than the remaining list. If so, empirically
+        assess the next word in the list. When the remaining list is shorter than
+        the longest currently known list, stop processing.
+  - During the evaluation process, remove each empirically assessed word from the
+    list; this will reduce complexity and reduce processing time.
 '''
