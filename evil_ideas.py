@@ -16,3 +16,10 @@ def assess_open_slots(word, constraints, guessed_letters, evil_word_list):
 
 
 constraints = display_word(guessed_letters[1])
+
+'''
+It might be nice to output how many words were eliminated from the total for each
+guess. Also, show the remaining words over the total number of words in the
+dictionary; display the percentage of words remaining and percentage eliminated
+by previous letter guessed.
+'''
