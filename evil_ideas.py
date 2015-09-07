@@ -1,20 +1,25 @@
 def evil_word_selector(constraints, guessed_letters, evil_word_list):
     '''Because we aren't using a single word, our "word" is constraints'''
-    repeats = {}      # dict of lists; key represents # of viable letter occurrences
+    # dict of lists; key represents # of viable letter occurrences
+    repeats = {0: {'words': [], 'use': False}} # may need 'pattern'='__*_'
     letter_count = 0  # number of viable letter occurences
-    list_counter = {}
+    most_words = {}   # placeholder dictionary to hold
 
     for word in evil_word_list:
         letter_count = list(word).count(guessed_letters[0][-1])
         if letter_count > 0:
-            if assess_open_spots(word, constraints, guessed_letters):
-                repeats[letter_count]['words'].extend([word])
+            if not repeats.get(letter_count, False):
+                repeats[letter_count] = {'words': [], 'use': False}
+            if assess_open_slots(word, constraints, guessed_letters):
+                repeats[letter_count]['words'].append([word])
         else:
-            repeats[0]['words'].extend([word]) # represents list of words without guessed letter
+            repeats[0]['words'].append([word]) # list of words without guessed letter
 
         # Assess relative lengths of initial pass
-        for num_repeats, word_list in repeats.items():
-             list_counter[num_repeats] = len(repeats[num_repeats])
+        for num_repeats, num_repeats_dict in repeats.items():
+             num_repeats_dict['length'] = len(num_repeats_dict['words'])
+
+        most_words = sorted(repeats.items(), key=lambda l: l['length'])
 
             len(repeats[0]) >= len(repeats[1]):
                 evil_word_list = repeats[0][:]
@@ -23,16 +28,29 @@ def evil_word_selector(constraints, guessed_letters, evil_word_list):
             while True:
 
 
-    return evil_word_list, guessed_letters, constraints
+    return constraints, guessed_letters, evil_word_list
 
 def assess_open_slots(word, letter, constraints, repeats):
-    if # letter only appears in '_' slots:
-        return True, repeats
+    available_indices = []
+    usable = True
+    for constraint_index, constraint_char in enumerate(list(constraints)):
+        if constraint_char == '_':
+            available_indices.append(constraint_index)
+
+    for index, char in enumerate(list(word)):
+        if index not in available_indices: # letter only appears in '_' slots:
+            return False, repeats
     else:
-        return False, repeats
+        return usable, repeats
+
+evil_word_list = ['goat', 'moat', 'boat',
+                  'goal', 'mode', 'boar',
+                  'goad', 'goag']
+constraints = '__a_'
+guessed_letters = []
+guessed_letters[0] = ['g']
 
 
-constraints = display_word(guessed_letters[1])
 
 '''
 Gameplay Ideas:
@@ -75,4 +93,10 @@ list_lengths will be a dictionary.
       - used for first round assessment
   - key='empirical display' (e.g., "_ _ E _")
       - each of these are created only when length of other lists are considered
+'''
+
+'''
+constraints will be defined as a list with index corresponding to position in
+word of game_word length. Unfilled slots have a value of '_', filled slots have
+the value of the letter present.
 '''
