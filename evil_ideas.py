@@ -2,35 +2,40 @@ def evil_word_selector(constraints, guessed_letters, evil_word_list):
     '''Because we aren't using a single word, our "word" is constraints'''
     # dict of lists; key represents # of viable letter occurrences
     repeats = {0: {'words': [], 'use': False}} # may need 'pattern'='__*_'
-    letter_count = 0  # number of viable letter occurences
-    most_words = {}   # placeholder dictionary to hold
+    letter_count = 0   # number of viable letter occurences
+    most_words = 0     # placeholder dictionary to hold
+    selected_dict = {} # holds largest dictionary
 
     for word in evil_word_list:
         letter_count = list(word).count(guessed_letters[0][-1])
         if letter_count > 0:
             if not repeats.get(letter_count, False):
                 repeats[letter_count] = {'words': [], 'use': False}
-            if assess_open_slots(word, constraints, guessed_letters):
-                repeats[letter_count]['words'].append([word])
+            if assess_open_slots(word, guessed_letters[0][-1], constraints):
+                repeats[letter_count]['words'].append(word)
         else:
-            repeats[0]['words'].append([word]) # list of words without guessed letter
+            repeats[0]['words'].append(word) # list of words without guessed letter
 
-        # Assess relative lengths of initial pass
-        for num_repeats, num_repeats_dict in repeats.items():
-             num_repeats_dict['length'] = len(num_repeats_dict['words'])
+    # Assess relative lengths of initial pass
+    for num_repeats, num_repeats_dict in repeats.items():
+        num_repeats_dict['length'] = len(num_repeats_dict['words'])
+        if num_repeats_dict['length'] > most_words:
+            most_words = num_repeats_dict['length']
+            selected_dict = num_repeats_dict
 
-        most_words = sorted(repeats.items(), key=lambda l: l['length'])
+    # Make decision about how to proceed
+    if selected_dict == repeats[0]:
+        evil_word_list = repeats[0]['words']
+    else:
+        # Start assessment of duplicates
+        # while True:
+        print("I made it here!")
 
-            len(repeats[0]) >= len(repeats[1]):
-                evil_word_list = repeats[0][:]
-        else:
-            # Start assessment of duplicates
-            while True:
-
-
+    print(repeats)
+    print("Letter: {}\nTotal words: {}".format(guessed_letters[0][-1], len(evil_word_list)))
     return constraints, guessed_letters, evil_word_list
 
-def assess_open_slots(word, letter, constraints, repeats):
+def assess_open_slots(word, letter, constraints):
     available_indices = []
     usable = True
     for constraint_index, constraint_char in enumerate(list(constraints)):
@@ -38,19 +43,20 @@ def assess_open_slots(word, letter, constraints, repeats):
             available_indices.append(constraint_index)
 
     for index, char in enumerate(list(word)):
-        if index not in available_indices: # letter only appears in '_' slots:
-            return False, repeats
-    else:
-        return usable, repeats
+        if letter == char:    # look for location of guess letter in word
+            if index not in available_indices: # letter can only appear in '_' slots:
+                return False, repeats
+
+    return usable
 
 evil_word_list = ['goat', 'moat', 'boat',
                   'goal', 'mode', 'boar',
                   'goad', 'goag']
 constraints = '__a_'
 guessed_letters = []
-guessed_letters[0] = ['g']
+guessed_letters.append(['g'])
 
-
+evil_word_selector(constraints, guessed_letters, evil_word_list)
 
 '''
 Gameplay Ideas:
