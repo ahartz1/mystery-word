@@ -1,6 +1,8 @@
 def evil_word_selector(constraints, guessed_letters, evil_word_list):
     '''Because we aren't using a single word, our "word" is constraints'''
-    repeats = []  # list of lists; index represents the # of times letter appears
+    repeats = []      # list of lists; index represents # of viable letter occurrences
+    letter_count = 0  # number of viable letter occurences
+
     for word in evil_word_list:
       letter_count = list(word).count(guessed_letters[0][-1])
       if letter_count > 0:
@@ -41,4 +43,13 @@ the single-letter-containing list:
         the longest currently known list, stop processing.
   - During the evaluation process, remove each empirically assessed word from the
     list; this will reduce complexity and reduce processing time.
+'''
+
+'''
+guessed_letters may now need to be a list containing two lists: the current guessed
+letter and the letters used; guessed_letters[0] and guessed_letters[1], respectively.
+  - Is this necessary? We will already be returning a list that eliminates the
+    previously guessed letters, so no need to keep track of them.
+    - Yes, we will need a place to store the current guess; must clear the current
+      letter from guessed_letters[0] after assessment is made.
 '''
