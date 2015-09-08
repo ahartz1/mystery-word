@@ -38,7 +38,7 @@ def random_word(word_list):
     """
     Returns a random word from the word list.
     """
-    return word_list[random.randint(0,len(word_list))].lower()
+    return word_list[random.randint(0,len(word_list)+1)].lower()
 
 
 def init_constraint(length):
@@ -94,7 +94,7 @@ def evil_word_selector(constraints, guessed_letters, evil_word_list):
 
     for word in evil_word_list:
         letter_count = list(word.lower()).count(guessed_letters[-1])
-        if letter_count > 0:
+        if letter_count > 0 and len(word) == len(constraints):
             if not repeats.get(letter_count, False):
                 repeats[letter_count] = {}
             useable_word, new_constraints = assess_open_slots(
@@ -105,7 +105,7 @@ def evil_word_selector(constraints, guessed_letters, evil_word_list):
                 if not repeats[letter_count].get(new_constraints, False):
                     repeats[letter_count][new_constraints] = []
                 repeats[letter_count][new_constraints].append(word.lower())
-        else:
+        elif len(word) == len(constraints):
             repeats[0]['words'].append(word) # list of words without guessed letter
 
     # print(repeats)
@@ -125,8 +125,6 @@ def evil_word_selector(constraints, guessed_letters, evil_word_list):
         evil_word_list = selected_dict['words']
         new_constraints = selected_dict['new_constraints']
 
-    # print(repeats)
-    # print("Letter: {}\nTotal words: {}".format(guessed_letters[0][-1], len(evil_word_list)))
     # print("New constraints: {}\nGuessed letters: {}\nRemaining words: {}".format(
     #     new_constraints, guessed_letters, evil_word_list))
     return new_constraints, guessed_letters, evil_word_list
@@ -210,7 +208,8 @@ def game_loop(constraints, width, word_list):
             no_guesses_msg = 'You have run out of guesses'.upper()
             no_guesses_fill = (width - len(no_guesses_msg))//2
             print('\n'*4+'_'*no_guesses_fill+no_guesses_msg+'_'*no_guesses_fill)
-            print('\nThe word you were trying to guess was: {}\n\n'.format(random_word(word_list).upper()))
+            print('\nThe word you were trying to guess was: {}\n\n'.format(
+                   random_word(word_list).upper()))
 
         if is_word_complete(constraints) or num_guesses >= allowed_guesses:
             play_again = user_continue(width)
