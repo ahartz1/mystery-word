@@ -6,7 +6,7 @@ def easy_words():
     """
     Returns empty constraints 4-6 characters long.
     """
-    length = random.randint(4,7)
+    length = random.randint(4,6)
     constraints = init_constraint(length)
     return ''.join(constraints)
 
@@ -15,7 +15,7 @@ def medium_words():
     """
     Returns empty constraints 6–8 characters long.
     """
-    length = random.randint(6,9)
+    length = random.randint(6,8)
     constraints = init_constraint(length)
     return ''.join(constraints)
 
@@ -295,7 +295,7 @@ def main():
 
             # Print welcome
             print('?'*width)
-            welcome = 'Welcome to Mystery Word!'.upper()
+            welcome = 'Welcome to EVIL Mystery Word!'.upper()
             fill_half = (width - len(welcome) - 2)//2
             print(('?' + ' '*(width-2) + '?')*((height-7)//3))
             print( '?' + ' '*fill_half + welcome + ' '*fill_half+'?')
