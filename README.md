@@ -10,7 +10,7 @@
 
 * To run this program, save `mystery_word.py` to your computer. Using a command-line program (such as Terminal on Mac&nbsp;OS&nbsp;X), navigate to the folder containing the downloaded file and run the following line to play: `python3 mystery_word.py`
 
-* This program uses the os.terminal_info function to retrieve the size of your terminal window to appropriately scale the output. If this environment variable is not accessible on your system, the default output size is 80 columns x 24 rows.
+* This program uses the os.terminal_info function to retrieve the size of your terminal window to appropriately scale the output. If this environment variable is not accessible on your system, the output size defaults to 80 columns x 24 rows.
 
 #### Game Description
 Much like hangman, you guess letters in an effort to uncover a word randomly selected from the dictionary. Once you select your difficulty level, each letter in the word is represented by an underscore. As you guess letters correctly, they replace the place-holding underscores. You have only **8 guesses**, but if you select a letter that is in the word, **you do not lose a guess**. (Also, you don't lose a guess if you accidentally guess a letter you've already guessed.) Your number of remaining guesses is displayed each round, along with the vowels and consonants that you have already guessed.
