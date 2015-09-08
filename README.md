@@ -20,3 +20,11 @@ Easy | Medium | Hard
 
 ##### A word about the dictionary
 The words used in this game are from web2 (Webster's Second International) dictionary, copyright 1934. The copyright has lapsed, and thus is in the public domain. Keep an open mind and get ready to learn some new words as you play!
+
+# Evil Mystery Word
+
+#### System Requirements
+Same as for Mystery Word, except the filename is `evil_mystery_word.py`.
+
+#### Game Description
+Gameplay is the same as for Mystery Word, but the inner workings have changed to make the game more challenging (OK, nearly impossible). The computer actively works against the player by finding words fitting the display pattern (e.g., `_ _ Y _ _ _ _` ), to avoid having the guessed letters appear in the word.

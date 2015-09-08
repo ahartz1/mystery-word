@@ -15,7 +15,7 @@ class TestEvilMysteryWord(unittest.TestCase):
 
     def evil_word_selector(self):
         # new_constraints, evil_word_list = evil_word_selector(constraints, guessed_letters, word_list)
-        self.assertEqual(evil_word_selector(constraints, guessed_letters, word_list), 'g_a_', ["goat", "goal", "goad", "goag", "goaf", "goam"])
+        self.assertEqual(evil_word_selector(constraints, guessed_letters, word_list), ('g_a_', ["goat", "goal", "goad", "goag", "goaf", "goam"]))
 
 
     # def test_random_word(self):
