@@ -38,7 +38,7 @@ def random_word(word_list):
     """
     Returns a random word from the word list.
     """
-    return word_list[random.randint(0,len(word_list)+1)].lower()
+    return word_list[random.randint(0,len(word_list))].lower()
 
 
 def init_constraint(length):
@@ -125,9 +125,9 @@ def evil_word_selector(constraints, guessed_letters, evil_word_list):
         evil_word_list = selected_dict['words']
         new_constraints = selected_dict['new_constraints']
 
-    # print("New constraints: {}\nGuessed letters: {}\nRemaining words: {}".format(
-    #     new_constraints, guessed_letters, evil_word_list))
-    return new_constraints, guessed_letters, evil_word_list
+    # print("New constraints: {}\nRemaining words: {}".format(
+    #     new_constraints, evil_word_list))
+    return new_constraints, evil_word_list
 
 
 def assess_open_slots(word, letter, constraints):
@@ -189,8 +189,7 @@ def game_loop(constraints, width, word_list):
         guessed_letters.append(user_guess(guessed_letters, width))
 
         # Run the evil_word_selector
-        constraints, guessed_letters, word_list = evil_word_selector(
-            constraints, guessed_letters, word_list)
+        constraints, word_list = evil_word_selector(constraints, guessed_letters, word_list)
         if guessed_letters[-1] not in constraints:
             num_guesses += 1
 
